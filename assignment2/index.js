@@ -12,14 +12,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.get("/scraped", async (req, res) => {
-  const scraped = await scrapeInstagram("https://www.instagram.com/nipgaming/");
+  try {
+    const scraped = await scrapeInstagram(
+      "https://www.instagram.com/nipgaming/"
+    );
 
-//   console.log(scraped)
+    //   console.log(scraped)
 
-  res.status(200).json({
-    status: "success",
-    data: scraped,
-  });
+    res.status(200).json({
+      status: "success",
+      data: scraped,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "fail",
+      msg: error.message,
+    });
+  }
 });
 
 const PORT = process.env.PORT;
